@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using CompAndDel;
 using TwitterUCU;
+using CognitiveCoreUCU;
+using CompAndDel.Filters;
 
 namespace CompAndDel.Pipes
 {
-    public class PipeSerial : IPipe
+    public class PipeForkConditional : IPipe
     {
         protected IFilter filtro;
         protected IPipe nextPipe;
@@ -17,7 +19,7 @@ namespace CompAndDel.Pipes
         /// </summary>
         /// <param name="filtro">Filtro que se debe aplicar sobre la imagen</param>
         /// <param name="nextPipe">Siguiente cañería</param>
-        public PipeSerial(IFilter filtro, IPipe nextPipe)
+        public PipeForkConditional(IFilter filtro, IPipe nextPipe)
         {
             this.nextPipe = nextPipe;
             this.filtro = filtro;
@@ -43,13 +45,25 @@ namespace CompAndDel.Pipes
         /// <param name="picture">Imagen a la cual se debe aplicar el filtro</param>
         public IPicture Send(IPicture picture)
         {
-            picture = this.filtro.Filter(picture);
+            FilterNegative neg = new FilterNegative();
             PictureProvider provider = new PictureProvider();
-            provider.SavePicture(picture, $@"beer {this.Filter.Filtro}.jpg");
-            /* publica la imagen en twitter
-            var twitter = new TwitterImage();
-            Console.WriteLine(twitter.PublishToTwitter($"Beer {this.Filter.Filtro}", $@"beer {this.Filter.Filtro}.jpg"));
-            */
+            provider.SavePicture(picture, @"a.jpg");
+            CognitiveFace cog = new CognitiveFace(true);
+            cog.Recognize(@"a.jpg");
+            if (cog.FaceFound)
+            {
+                picture = this.filtro.Filter(picture);
+                provider.SavePicture(picture, @"Cara.jpg");
+            }
+            else
+            {
+                picture = neg.Filter(picture);
+                provider.SavePicture(picture, @"No cara.jpg");
+            }
+            
+            //var twitter = new TwitterImage();
+            //Console.WriteLine(twitter.PublishToTwitter($"Beer {this.Filter.Filtro}", $@"beer {this.Filter.Filtro}.jpg"));
+            
             return this.nextPipe.Send(picture);
         }
     }

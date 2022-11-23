@@ -14,6 +14,7 @@ namespace CompAndDel.Filters
         /// <returns>La imagen recibida pero en escala de grises.</returns>
         public IPicture Filter(IPicture image)
         {
+            this.Filtro = "Greyscale";
             IPicture result = image.Clone();
 
             for (int x = 0; x < result.Width; x++)
@@ -31,8 +32,8 @@ namespace CompAndDel.Filters
                     result.SetColor(x, y, colorGris);
                 }
             }
-
             return result;
         }
+        public string Filtro { get; set; }
     }
 }

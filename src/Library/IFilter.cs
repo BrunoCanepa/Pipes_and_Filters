@@ -1,5 +1,4 @@
-using System;
-
+using TwitterUCU;
 namespace CompAndDel
 {
     /// <summary>
@@ -14,5 +13,6 @@ namespace CompAndDel
         /// <param name="image">La imagen a la cual se le va a aplicar el filtro.</param>
         /// <returns>La misma imagen o una nueva imagen creada por el filtro.</returns>
         IPicture Filter(IPicture image);
+        public string Filtro{get;set;}
     }
 }

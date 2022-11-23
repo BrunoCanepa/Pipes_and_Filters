@@ -14,6 +14,8 @@ namespace CompAndDel.Filters
         /// <returns>La imagen recibida pero en negativo.</returns>
         public IPicture Filter(IPicture image)
         {
+
+            this.Filtro = "Negative";
             IPicture result = image.Clone();
 
             for (int x = 0; x < result.Width; x++)
@@ -36,8 +38,8 @@ namespace CompAndDel.Filters
                     result.SetColor(x, y, negativeColor);
                 }
             }
-
             return result;
         }
+        public string Filtro { get; set; }
     }
 }

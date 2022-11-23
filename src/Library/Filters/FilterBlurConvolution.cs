@@ -38,6 +38,7 @@ namespace CompAndDel.Filters
         /// <returns>La imagen con el filtro aplicado.</returns>
         public IPicture Filter(IPicture image)
         {
+            this.Filtro = "BlurConvultion";
             IPicture result = image.Clone();
             Color[,] sample;
 
@@ -49,10 +50,9 @@ namespace CompAndDel.Filters
                     result.SetColor(x, y, GetFilteredColor(sample));
                 }
             }
-
             return result;
         }
-
+        public string Filtro { get; set; }
         private Color GetFilteredColor(Color[,] sample)
         {
             int redFinal = 0;
